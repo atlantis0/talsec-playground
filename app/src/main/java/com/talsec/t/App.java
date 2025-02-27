@@ -28,6 +28,7 @@ public class App extends Application implements ThreatListener.ThreatDetected {
         Talsec.start(this, config);
 
         /**
+         * Pre-Android 15
          * An alternative approach to screen block protection
          * No need to provide activity instance
          * simply pass context
