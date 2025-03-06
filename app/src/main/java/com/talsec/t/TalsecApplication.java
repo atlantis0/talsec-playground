@@ -2,6 +2,7 @@ package com.talsec.t;
 
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo;
 import com.aheaditec.talsec_security.security.api.Talsec;
@@ -10,9 +11,9 @@ import com.aheaditec.talsec_security.security.api.ThreatListener;
 
 import java.util.List;
 
-public class App extends Application implements ThreatListener.ThreatDetected {
+public class TalsecApplication extends Application implements ThreatListener.ThreatDetected {
 
-    private static final String TAG = App.class.getSimpleName();
+    private static final String TAG = TalsecApplication.class.getSimpleName();
 
     @Override
     public void onCreate() {
@@ -22,6 +23,7 @@ public class App extends Application implements ThreatListener.ThreatDetected {
                 new String[] {"Tmac/QIomCqEGS1jYqy9cMMrqaitVoZLpjXzCMnt55Q="})
                 .blacklistedPackageNames(new String[]{"com.spotify.music", "com.leavjenn.hews2"})
                 .suspiciousPermissions(new String[][]{{"android.permission.READ_CONTACTS"}, {"android.permission.SEND_SMS"}})
+                .prod(true)
                 .build();
         ThreatListener threatListener = new ThreatListener(this);
         threatListener.registerListener(getApplicationContext());
@@ -40,21 +42,24 @@ public class App extends Application implements ThreatListener.ThreatDetected {
     @Override
     public void onRootDetected() {
         Log.d(TAG, "Root Detected");
+        Toast.makeText(getApplicationContext(), "Root Detected", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onDebuggerDetected() {
         Log.d(TAG, "Debugger Detected");
+        Toast.makeText(getApplicationContext(), "Debugger Detected", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onEmulatorDetected() {
-
+        Toast.makeText(getApplicationContext(), "Emulator Detected", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onTamperDetected() {
         Log.d(TAG, "Tamper Detected");
+        Toast.makeText(getApplicationContext(), "Tamper Detected", Toast.LENGTH_LONG).show();
     }
 
     @Override

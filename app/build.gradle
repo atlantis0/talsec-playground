@@ -16,9 +16,26 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    externalNativeBuild {
+        cmake {
+            path 'src/main/native/CMakeLists.txt'
+            version "3.22.1"
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("objection.jks")
+            storePassword 'basil-joule-bug'
+            keyAlias 'objection'
+            keyPassword 'basil-joule-bug'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
