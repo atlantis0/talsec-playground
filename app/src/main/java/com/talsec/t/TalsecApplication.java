@@ -1,6 +1,7 @@
 package com.talsec.t;
 
 import android.app.Application;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -8,7 +9,9 @@ import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo;
 import com.aheaditec.talsec_security.security.api.Talsec;
 import com.aheaditec.talsec_security.security.api.TalsecConfig;
 import com.aheaditec.talsec_security.security.api.ThreatListener;
+import com.talsec.t.malware.Scan;
 
+import java.io.IOException;
 import java.util.List;
 
 public class TalsecApplication extends Application implements ThreatListener.ThreatDetected {
@@ -36,6 +39,17 @@ public class TalsecApplication extends Application implements ThreatListener.Thr
          * simply pass context
          */
         ScreenBlock.Block(getApplicationContext(), true);
+
+        /**
+         *
+         * App scan demo using Yara
+         */
+        Scan scan = new Scan(getApplicationContext(), this.getPackageName());
+        try {
+            scan.verify();
+        } catch (PackageManager.NameNotFoundException | IOException e) {
+            Log.e(TAG, e.toString());
+        }
 
     }
 

@@ -16,6 +16,7 @@ static const char* TAG = "Yara";
 struct UserData {
     const char * file_path;
     const char * pkg_name;
+    const char * rule_path;
     JNIEnv *env;
     jobject obj;
 };
@@ -29,7 +30,7 @@ int result_callback(YR_SCAN_CONTEXT* context, int message, void* message_data, v
         jmethodID matchResultMethod = env->GetMethodID(jniScanClass, "result", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
         jstring j_pkg_name = env->NewStringUTF(user_d->pkg_name);
         jstring j_file_path = env->NewStringUTF(user_d->file_path);
-        jstring j_identifier = env->NewStringUTF(rule->identifier);
+        jstring j_identifier = env->NewStringUTF(user_d->rule_path);
         env->CallVoidMethod(user_d->obj, matchResultMethod, j_pkg_name, j_file_path, j_identifier);
         // clean up refs
         env->DeleteLocalRef(j_pkg_name); env->DeleteLocalRef(j_file_path); env->DeleteLocalRef(j_identifier);
@@ -71,6 +72,7 @@ extern "C" int JNICALL Java_com_talsec_t_malware_Scan_check(JNIEnv *env, jobject
     UserData user_data{};
     user_data.file_path = input_file;
     user_data.pkg_name = app_package_name;
+    user_data.rule_path = rule_file;
     user_data.env = env;
     user_data.obj = obj;
 
