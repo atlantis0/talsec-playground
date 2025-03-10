@@ -42,7 +42,7 @@ public class TalsecApplication extends Application implements ThreatListener.Thr
 
         /**
          *
-         * App scan demo using Yara
+         * Malware scan demo using Yara
          */
         Scan scan = new Scan(getApplicationContext(), this.getPackageName());
         try {
